@@ -1515,8 +1515,6 @@
       { name: 'Ovo', price: 1 },
       { name: 'Cebola Caramelizada', price: 2 },
       { name: 'Trocar pão por pão de queijo', price: 4 }
-      { name: 'SEM ADICIONAL', price: 0 }
-
     ];
     
     // Verifica se está no horário de funcionamento
