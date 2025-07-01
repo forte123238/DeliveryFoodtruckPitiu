@@ -27,7 +27,7 @@
       padding: 0;
       color: #333;
       line-height: 1.6;
-      background-image: url('https://raw.githubusercontent.com/seu-usuario/seu-repositorio/main/backgroundfoodtruckpitiu.png');
+      background-image: url('backgroundfoodtruckpitiu.png');
       background-size: cover;
       background-attachment: fixed;
       background-position: center;
@@ -497,7 +497,7 @@
 </head>
 <body>
   <div class="header">
-    <img src="https://raw.githubusercontent.com/seu-usuario/seu-repositorio/main/logotipo1pitiu.png" alt="FoodTruck do Pitiu" class="logo">
+    <img src="logotipo1pitiu.png" alt="FoodTruck do Pitiu" class="logo">
     <h1>𝙁𝙊𝙊𝘿𝙏𝙍𝙐𝘾𝙆 𝘿𝙊 𝙋𝙄𝙏𝙄𝙐</h1>
     <p>☕ Pitiu Café Especial - 08:00h às 16:00h 🍞</p>
     <p>🍻 Pitiu Artesanais - 19:00h às 00:00h 🍔</p>
@@ -1023,6 +1023,9 @@
             </div>
           </div>
         </div>
+
+
+        
         
         <div class="item">
           <img src="https://source.unsplash.com/random/300x300/?beer,2" alt="Heineken" class="item-image">
