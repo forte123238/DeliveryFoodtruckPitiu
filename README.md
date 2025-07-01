@@ -1,7 +1,7 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Cardápio Completo - FoodTruck do Pitiu</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
@@ -13,12 +13,15 @@
       --success-color: #27ae60;
       --danger-color: #e74c3c;
       --info-color: #3498db;
+      --open-color: #2ecc71;
+      --closed-color: #e74c3c;
     }
     
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      -webkit-tap-highlight-color: transparent;
     }
     
     body {
@@ -33,6 +36,7 @@
       background-position: center;
       background-color: rgba(0, 0, 0, 0.7);
       background-blend-mode: overlay;
+      touch-action: manipulation;
     }
     
     .header {
@@ -58,6 +62,25 @@
     .header p {
       font-size: 0.9rem;
       margin-bottom: 0.3rem;
+    }
+    
+    .status {
+      display: inline-block;
+      padding: 0.3rem 0.6rem;
+      border-radius: 20px;
+      font-weight: bold;
+      margin: 0.3rem 0;
+      font-size: 0.8rem;
+    }
+    
+    .status.open {
+      background-color: var(--open-color);
+      color: white;
+    }
+    
+    .status.closed {
+      background-color: var(--closed-color);
+      color: white;
     }
     
     .header .social-links {
@@ -86,6 +109,7 @@
       overflow-x: auto;
       white-space: nowrap;
       padding: 0.5rem 0;
+      -webkit-overflow-scrolling: touch;
     }
     
     .tab-button {
@@ -99,9 +123,10 @@
       cursor: pointer;
       border-bottom: 3px solid transparent;
       font-size: 0.8rem;
+      touch-action: manipulation;
     }
     
-    .tab-button:hover {
+    .tab-button:hover, .tab-button:active {
       background-color: rgba(255,255,255,0.1);
       border-bottom: 3px solid var(--secondary-color);
     }
@@ -116,23 +141,26 @@
       max-width: 1200px;
       margin: 0 auto;
       padding: 1rem;
+      flex-direction: column;
     }
     
     .menu-section {
       flex: 3;
-      padding-right: 1rem;
+      padding-right: 0;
+      margin-bottom: 1rem;
+      width: 100%;
     }
     
     .cart-section {
       flex: 1;
       position: sticky;
-      top: 60px;
-      height: calc(100vh - 60px);
-      overflow-y: auto;
-      padding: 1rem;
+      bottom: 0;
+      width: 100%;
       background-color: rgba(255, 255, 255, 0.95);
       border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+      padding: 1rem;
+      z-index: 90;
     }
     
     .category {
@@ -187,7 +215,7 @@
     
     .item-details {
       flex: 1;
-      min-width: 200px;
+      min-width: calc(100% - 116px);
     }
     
     .item-title {
@@ -213,6 +241,7 @@
       display: flex;
       align-items: center;
       margin-top: 0.5rem;
+      width: 100%;
     }
     
     .add-to-cart {
@@ -224,9 +253,11 @@
       cursor: pointer;
       font-weight: bold;
       transition: background-color 0.3s;
+      touch-action: manipulation;
+      width: 100%;
     }
     
-    .add-to-cart:hover {
+    .add-to-cart:hover, .add-to-cart:active {
       background-color: var(--secondary-color);
     }
     
@@ -240,6 +271,9 @@
     
     .cart-items {
       margin-bottom: 1rem;
+      max-height: 200px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
     
     .cart-item {
@@ -289,6 +323,7 @@
       cursor: pointer;
       transition: background-color 0.3s;
       margin-bottom: 0.5rem;
+      touch-action: manipulation;
     }
     
     .checkout-button {
@@ -296,7 +331,7 @@
       color: white;
     }
     
-    .checkout-button:hover {
+    .checkout-button:hover, .checkout-button:active {
       background-color: #2ecc71;
     }
     
@@ -305,24 +340,8 @@
       color: white;
     }
     
-    .clear-button:hover {
+    .clear-button:hover, .clear-button:active {
       background-color: #c0392b;
-    }
-    
-    .whatsapp-button {
-      background-color: #25D366;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .whatsapp-button i {
-      margin-right: 8px;
-    }
-    
-    .whatsapp-button:hover {
-      background-color: #128C7E;
     }
     
     .empty-cart {
@@ -331,7 +350,7 @@
       padding: 1rem 0;
     }
     
-    /* Checkout Modal */
+    /* Modal de Checkout */
     .modal {
       display: none;
       position: fixed;
@@ -342,6 +361,7 @@
       background-color: rgba(0,0,0,0.7);
       z-index: 1000;
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
     
     .modal-content {
@@ -379,6 +399,7 @@
       border: 1px solid #ddd;
       border-radius: 4px;
       font-family: inherit;
+      font-size: 1rem;
     }
     
     .form-group textarea {
@@ -420,6 +441,12 @@
     
     .payment-option {
       margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+    }
+    
+    .payment-option input {
+      margin-right: 0.5rem;
     }
     
     .submit-order {
@@ -435,23 +462,132 @@
       transition: background-color 0.3s;
     }
     
-    .submit-order:hover {
+    .submit-order:hover, .submit-order:active {
       background-color: var(--secondary-color);
     }
     
-    @media (max-width: 768px) {
+    /* Modal de Adicionais */
+    .addons-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.7);
+      z-index: 1001;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    .addons-content {
+      background-color: white;
+      margin: 2rem auto;
+      padding: 2rem;
+      border-radius: 8px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+    
+    .addon-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      align-items: center;
+    }
+    
+    .addon-checkbox {
+      margin-right: 1rem;
+    }
+    
+    .addon-name {
+      flex: 1;
+    }
+    
+    .addon-price {
+      font-weight: bold;
+      color: var(--primary-color);
+    }
+    
+    /* Opções de retirada */
+    .delivery-options {
+      display: flex;
+      margin-bottom: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    
+    .delivery-option {
+      flex: 1;
+      text-align: center;
+      padding: 0.8rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      border-right: 1px solid #ddd;
+    }
+    
+    .delivery-option:last-child {
+      border-right: none;
+    }
+    
+    .delivery-option input {
+      display: none;
+    }
+    
+    .delivery-option label {
+      display: block;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+    
+    .delivery-option.selected {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    /* Responsividade */
+    @media (min-width: 768px) {
       .container {
-        flex-direction: column;
+        flex-direction: row;
       }
       
       .menu-section {
-        padding-right: 0;
-        margin-bottom: 1rem;
+        padding-right: 1rem;
+        margin-bottom: 0;
       }
       
       .cart-section {
-        position: static;
-        height: auto;
+        position: sticky;
+        top: 60px;
+        height: calc(100vh - 60px);
+        bottom: auto;
+      }
+      
+      .item-image {
+        width: 100px;
+        height: 100px;
+      }
+      
+      .item-details {
+        min-width: calc(100% - 116px);
+      }
+      
+      .add-to-cart {
+        width: auto;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .header h1 {
+        font-size: 1.5rem;
+      }
+      
+      .tab-button {
+        padding: 0.6rem 0.8rem;
+        font-size: 0.7rem;
       }
       
       .item {
@@ -465,12 +601,11 @@
         margin-bottom: 1rem;
       }
       
-      .tabs {
-        justify-content: flex-start;
+      .item-details {
+        min-width: 100%;
       }
       
-      .modal-content {
-        margin: 1rem auto;
+      .modal-content, .addons-content {
         padding: 1rem;
       }
     }
@@ -499,11 +634,11 @@
   <div class="header">
     <img src="logotipo1pitiu.png" alt="FoodTruck do Pitiu" class="logo">
     <h1>𝙁𝙊𝙊𝘿𝙏𝙍𝙐𝘾𝙆 𝘿𝙊 𝙋𝙄𝙏𝙄𝙐</h1>
-    <p>🍻 Pitiu Artesanais - 19:00h às 00:00h 🍔</p>
+    <p id="status-text" class="status closed">Fechado</p>
     <p>📍 Praça Saiqui, Vila Valqueire</p>
-    <p>🛵 Cardápio impresso e Instagram e Whatsapp: é só clicar ⤵️</p>
+    <p>🛵 Cardápio impresso::Instagram::Whatsapp: é só clicar ⤵️</p>
     <div class="social-links">
-      <a href="[https://www.instagram.com/foodtruckdopitiu/](https://www.canva.com/design/DAFiXrcSAYE/SyFYhg2E6JroZstX3cA_hA/view?website#4)" target="_blank" title="Menuimpresso"><i class="fas fa-book-open"></i></a>
+      <a href="https://www.canva.com/design/DAFiXrcSAYE/SyFYhg2E6JroZstX3cA_hA/view?website#4" target="_blank" title="Menuimpresso"><i class="fas fa-book-open"></i></a>
       <a href="https://www.instagram.com/foodtruckdopitiu/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
       <a href="https://wa.me/5521992254487" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
     </div>
@@ -532,7 +667,7 @@
             <p class="item-description">Blend da casa de 180g, queijo prato e mussarela no pão brioche.</p>
             <div class="item-price">R$ 18,00</div>
             <div class="item-actions">
-              <button class="add-to-cart" onclick="addItem('Carne no Prato', 18, 'https://source.unsplash.com/random/300x300/?burger,1')">Adicionar</button>
+              <button class="add-to-cart" onclick="openAddonsModal('Carne no Prato', 18, 'https://source.unsplash.com/random/300x300/?burger,1')">Adicionar</button>
             </div>
           </div>
         </div>
@@ -544,7 +679,7 @@
             <p class="item-description">Blend da casa de 180g, queijo prato, mussarela e maionese da casa no pão brioche.</p>
             <div class="item-price">R$ 22,00</div>
             <div class="item-actions">
-              <button class="add-to-cart" onclick="addItem('Cheeseburguer', 22, 'https://source.unsplash.com/random/300x300/?burger,2')">Adicionar</button>
+              <button class="add-to-cart" onclick="openAddonsModal('Cheeseburguer', 22, 'https://source.unsplash.com/random/300x300/?burger,2')">Adicionar</button>
             </div>
           </div>
         </div>
@@ -556,7 +691,7 @@
             <p class="item-description">Blend da casa de 180g, calabresa, queijo prato, mussarela e maionese da casa no pão brioche.</p>
             <div class="item-price">R$ 23,00</div>
             <div class="item-actions">
-              <button class="add-to-cart" onclick="addItem('Cheese Calabresa', 23, 'https://source.unsplash.com/random/300x300/?burger,3')">Adicionar</button>
+              <button class="add-to-cart" onclick="openAddonsModal('Cheese Calabresa', 23, 'https://source.unsplash.com/random/300x300/?burger,3')">Adicionar</button>
             </div>
           </div>
         </div>
@@ -568,7 +703,7 @@
             <p class="item-description">Blend da casa de 180g, bacon, queijo prato, mussarela e maionese da casa no pão brioche.</p>
             <div class="item-price">R$ 26,00</div>
             <div class="item-actions">
-              <button class="add-to-cart" onclick="addItem('Cheese Bacon', 26, 'https://source.unsplash.com/random/300x300/?burger,4')">Adicionar</button>
+              <button class="add-to-cart" onclick="openAddonsModal('Cheese Bacon', 26, 'https://source.unsplash.com/random/300x300/?burger,4')">Adicionar</button>
             </div>
           </div>
         </div>
@@ -580,7 +715,7 @@
             <p class="item-description">Blend da casa de 90g, queijo prato, mussarela no pão brioche.</p>
             <div class="item-price">R$ 18,00</div>
             <div class="item-actions">
-              <button class="add-to-cart" onclick="addItem('Kids', 18, 'https://source.unsplash.com/random/300x300/?burger,5')">Adicionar</button>
+              <button class="add-to-cart" onclick="openAddonsModal('Kids', 18, 'https://source.unsplash.com/random/300x300/?burger,5')">Adicionar</button>
             </div>
           </div>
         </div>
@@ -592,7 +727,7 @@
             <p class="item-description">Blend da casa de 180g, anéis de cebola, bacon, calabresa, queijo prato, mussarela, barbecue e maionese da casa no pão triplo X (brioche com bacon, calabresa e parmesão).</p>
             <div class="item-price">R$ 32,00</div>
             <div class="item-actions">
-              <button class="add-to-cart" onclick="addItem('Black', 32, 'https://source.unsplash.com/random/300x300/?burger,6')">Adicionar</button>
+              <button class="add-to-cart" onclick="openAddonsModal('Black', 32, 'https://source.unsplash.com/random/300x300/?burger,6')">Adicionar</button>
             </div>
           </div>
         </div>
@@ -604,7 +739,7 @@
             <p class="item-description">Blend da casa de 180g, bacon, cebola caramelizada e cheddar cremoso no pão australiano.</p>
             <div class="item-price">R$ 32,00</div>
             <div class="item-actions">
-              <button class="add-to-cart" onclick="addItem('Cheddar Cremoso', 32, 'https://source.unsplash.com/random/300x300/?burger,7')">Adicionar</button>
+              <button class="add-to-cart" onclick="openAddonsModal('Cheddar Cremoso', 32, 'https://source.unsplash.com/random/300x300/?burger,7')">Adicionar</button>
             </div>
           </div>
         </div>
@@ -616,7 +751,7 @@
             <p class="item-description">Blend da casa de 180g, bacon, cebola caramelizada, cheddar cremoso e catupiry no pão de queijo.</p>
             <div class="item-price">R$ 34,00</div>
             <div class="item-actions">
-              <button class="add-to-cart" onclick="addItem('Pitiuzinho', 34, 'https://source.unsplash.com/random/300x300/?burger,8')">Adicionar</button>
+              <button class="add-to-cart" onclick="openAddonsModal('Pitiuzinho', 34, 'https://source.unsplash.com/random/300x300/?burger,8')">Adicionar</button>
             </div>
           </div>
         </div>
@@ -709,6 +844,79 @@
             </div>
           </div>
         </div>
+        
+        <!-- Adicionando a parte Doce -->
+        <div class="item">
+          <img src="https://source.unsplash.com/random/300x300/?cheese-bread,8" alt="Doce de Leite" class="item-image">
+          <div class="item-details">
+            <h3 class="item-title">Doce de Leite - R$14</h3>
+            <p class="item-description">Pão de queijo recheado com doce de leite cremoso.</p>
+            <div class="item-price">R$ 14,00</div>
+            <div class="item-actions">
+              <button class="add-to-cart" onclick="addItem('Pão de Queijo Doce de Leite', 14, 'https://source.unsplash.com/random/300x300/?cheese-bread,8')">Adicionar</button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="item">
+          <img src="https://source.unsplash.com/random/300x300/?cheese-bread,9" alt="Romeu e Julieta" class="item-image">
+          <div class="item-details">
+            <h3 class="item-title">Romeu e Julieta - R$15</h3>
+            <p class="item-description">Pão de queijo recheado com queijo e goiabada.</p>
+            <div class="item-price">R$ 15,00</div>
+            <div class="item-actions">
+              <button class="add-to-cart" onclick="addItem('Pão de Queijo Romeu e Julieta', 15, 'https://source.unsplash.com/random/300x300/?cheese-bread,9')">Adicionar</button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="item">
+          <img src="https://source.unsplash.com/random/300x300/?cheese-bread,10" alt="Chocolate Preto" class="item-image">
+          <div class="item-details">
+            <h3 class="item-title">Chocolate Preto - R$16</h3>
+            <p class="item-description">Pão de queijo recheado com chocolate preto.</p>
+            <div class="item-price">R$ 16,00</div>
+            <div class="item-actions">
+              <button class="add-to-cart" onclick="addItem('Pão de Queijo Chocolate Preto', 16, 'https://source.unsplash.com/random/300x300/?cheese-bread,10')">Adicionar</button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="item">
+          <img src="https://source.unsplash.com/random/300x300/?cheese-bread,11" alt="Chocolate Branco" class="item-image">
+          <div class="item-details">
+            <h3 class="item-title">Chocolate Branco - R$16</h3>
+            <p class="item-description">Pão de queijo recheado com chocolate branco.</p>
+            <div class="item-price">R$ 16,00</div>
+            <div class="item-actions">
+              <button class="add-to-cart" onclick="addItem('Pão de Queijo Chocolate Branco', 16, 'https://source.unsplash.com/random/300x300/?cheese-bread,11')">Adicionar</button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="item">
+          <img src="https://source.unsplash.com/random/300x300/?cheese-bread,12" alt="Chocolate Misto" class="item-image">
+          <div class="item-details">
+            <h3 class="item-title">Chocolate Misto - R$16</h3>
+            <p class="item-description">Pão de queijo recheado com chocolate preto e branco.</p>
+            <div class="item-price">R$ 16,00</div>
+            <div class="item-actions">
+              <button class="add-to-cart" onclick="addItem('Pão de Queijo Chocolate Misto', 16, 'https://source.unsplash.com/random/300x300/?cheese-bread,12')">Adicionar</button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="item">
+          <img src="https://source.unsplash.com/random/300x300/?cheese-bread,13" alt="Nutella" class="item-image">
+          <div class="item-details">
+            <h3 class="item-title">Nutella (com ou sem morango) - R$20</h3>
+            <p class="item-description">Pão de queijo recheado com Nutella e opção de morango.</p>
+            <div class="item-price">R$ 20,00</div>
+            <div class="item-actions">
+              <button class="add-to-cart" onclick="addItem('Pão de Queijo Nutella', 20, 'https://source.unsplash.com/random/300x300/?cheese-bread,13')">Adicionar</button>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Pastelzinho -->
@@ -795,6 +1003,79 @@
             <div class="item-price">R$ 2,00</div>
             <div class="item-actions">
               <button class="add-to-cart" onclick="addItem('Aplicação de Catupiry', 2, 'https://source.unsplash.com/random/300x300/?pastry,7')">Adicionar</button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Adicionando a parte Doce -->
+        <div class="item">
+          <img src="https://source.unsplash.com/random/300x300/?pastry,8" alt="Doce de Leite" class="item-image">
+          <div class="item-details">
+            <h3 class="item-title">Doce de Leite - R$6</h3>
+            <p class="item-description">Pastelzinho recheado com doce de leite cremoso.</p>
+            <div class="item-price">R$ 6,00</div>
+            <div class="item-actions">
+              <button class="add-to-cart" onclick="addItem('Pastelzinho Doce de Leite', 6, 'https://source.unsplash.com/random/300x300/?pastry,8')">Adicionar</button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="item">
+          <img src="https://source.unsplash.com/random/300x300/?pastry,9" alt="Romeu e Julieta" class="item-image">
+          <div class="item-details">
+            <h3 class="item-title">Romeu e Julieta - R$6</h3>
+            <p class="item-description">Pastelzinho recheado com queijo e goiabada.</p>
+            <div class="item-price">R$ 6,00</div>
+            <div class="item-actions">
+              <button class="add-to-cart" onclick="addItem('Pastelzinho Romeu e Julieta', 6, 'https://source.unsplash.com/random/300x300/?pastry,9')">Adicionar</button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="item">
+          <img src="https://source.unsplash.com/random/300x300/?pastry,10" alt="Chocolate Preto" class="item-image">
+          <div class="item-details">
+            <h3 class="item-title">Chocolate Preto - R$6</h3>
+            <p class="item-description">Pastelzinho recheado com chocolate preto.</p>
+            <div class="item-price">R$ 6,00</div>
+            <div class="item-actions">
+              <button class="add-to-cart" onclick="addItem('Pastelzinho Chocolate Preto', 6, 'https://source.unsplash.com/random/300x300/?pastry,10')">Adicionar</button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="item">
+          <img src="https://source.unsplash.com/random/300x300/?pastry,11" alt="Chocolate Branco" class="item-image">
+          <div class="item-details">
+            <h3 class="item-title">Chocolate Branco - R$6</h3>
+            <p class="item-description">Pastelzinho recheado com chocolate branco.</p>
+            <div class="item-price">R$ 6,00</div>
+            <div class="item-actions">
+              <button class="add-to-cart" onclick="addItem('Pastelzinho Chocolate Branco', 6, 'https://source.unsplash.com/random/300x300/?pastry,11')">Adicionar</button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="item">
+          <img src="https://source.unsplash.com/random/300x300/?pastry,12" alt="Chocolate Misto" class="item-image">
+          <div class="item-details">
+            <h3 class="item-title">Chocolate Misto - R$6</h3>
+            <p class="item-description">Pastelzinho recheado com chocolate preto e branco.</p>
+            <div class="item-price">R$ 6,00</div>
+            <div class="item-actions">
+              <button class="add-to-cart" onclick="addItem('Pastelzinho Chocolate Misto', 6, 'https://source.unsplash.com/random/300x300/?pastry,12')">Adicionar</button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="item">
+          <img src="https://source.unsplash.com/random/300x300/?pastry,13" alt="Nutella" class="item-image">
+          <div class="item-details">
+            <h3 class="item-title">Nutella - R$7</h3>
+            <p class="item-description">Pastelzinho recheado com Nutella.</p>
+            <div class="item-price">R$ 7,00</div>
+            <div class="item-actions">
+              <button class="add-to-cart" onclick="addItem('Pastelzinho Nutella', 7, 'https://source.unsplash.com/random/300x300/?pastry,13')">Adicionar</button>
             </div>
           </div>
         </div>
@@ -1023,9 +1304,6 @@
             </div>
           </div>
         </div>
-
-
-        
         
         <div class="item">
           <img src="https://source.unsplash.com/random/300x300/?beer,2" alt="Heineken" class="item-image">
@@ -1098,9 +1376,6 @@
       <div id="cart-total" class="cart-total">Total: R$ 0,00</div>
       <div class="cart-actions">
         <button class="cart-button checkout-button" onclick="openCheckoutModal()">Finalizar Pedido</button>
-        <button class="cart-button whatsapp-button" onclick="checkoutWhatsApp()">
-          <i class="fab fa-whatsapp"></i> WhatsApp
-        </button>
         <button class="cart-button clear-button" onclick="clearCart()">Limpar Carrinho</button>
       </div>
     </div>
@@ -1127,7 +1402,25 @@
         </div>
         
         <div class="form-group">
-          <label for="customer-neighborhood">3. Bairro:</label>
+          <label>3. Opção de retirada:</label>
+          <div class="delivery-options">
+            <div class="delivery-option" onclick="selectDeliveryOption(this, 'retirada')">
+              <input type="radio" id="option-retirada" name="delivery-option" value="retirada">
+              <label for="option-retirada">Retirada</label>
+            </div>
+            <div class="delivery-option" onclick="selectDeliveryOption(this, 'local')">
+              <input type="radio" id="option-local" name="delivery-option" value="local">
+              <label for="option-local">Comer no Local</label>
+            </div>
+            <div class="delivery-option" onclick="selectDeliveryOption(this, 'entrega')">
+              <input type="radio" id="option-entrega" name="delivery-option" value="entrega" checked>
+              <label for="option-entrega">Entrega</label>
+            </div>
+          </div>
+        </div>
+        
+        <div id="delivery-address-group" class="form-group">
+          <label for="customer-neighborhood">4. Bairro:</label>
           <select id="customer-neighborhood" required onchange="updateDeliveryFee()">
             <option value="">Selecione seu bairro</option>
             <option value="Cascadura">Cascadura (Taxa: R$12,00)</option>
@@ -1142,7 +1435,7 @@
           </select>
         </div>
         
-        <div class="form-group">
+        <div id="address-fields" class="form-group">
           <label for="customer-address">Endereço completo:</label>
           <input type="text" id="customer-street" placeholder="Rua" required>
           <input type="text" id="customer-number" placeholder="Número" required style="margin-top: 0.5rem;">
@@ -1155,7 +1448,7 @@
         </div>
         
         <div class="form-group">
-          <label>4. Forma de pagamento:</label>
+          <label>5. Forma de pagamento:</label>
           <div class="payment-options">
             <div class="payment-option">
               <input type="radio" id="payment-pix" name="payment" value="PIX" checked>
@@ -1181,8 +1474,27 @@
     </div>
   </div>
 
+  <!-- Modal de Adicionais -->
+  <div id="addons-modal" class="addons-modal">
+    <div class="addons-content">
+      <span class="close-modal" onclick="closeAddonsModal()">&times;</span>
+      <h2 id="addons-item-title">Adicionais</h2>
+      
+      <div id="addons-list">
+        <!-- Adicionais serão inseridos aqui -->
+      </div>
+      
+      <div class="form-group" style="margin-top: 1.5rem;">
+        <button type="button" class="submit-order" onclick="addItemWithAddons()">Adicionar ao Carrinho</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     let cart = [];
+    let currentItem = null;
+    let currentAddons = [];
+    let orderNumber = 1000;
     const deliveryFees = {
       'Cascadura': 12,
       'Madureira': 10,
@@ -1194,6 +1506,34 @@
       'Praça Seca': 15,
       'Tanque': 15
     };
+    
+    const addons = [
+      { name: 'Carne', price: 8 },
+      { name: 'Bacon ou Calabresa', price: 4 },
+      { name: 'Cheddar ou Catupiry', price: 5 },
+      { name: 'Queijo Prato ou Mussarela', price: 1.5 },
+      { name: 'Ovo', price: 1 },
+      { name: 'Cebola Caramelizada', price: 2 },
+      { name: 'Trocar pão por pão de queijo', price: 4 }
+    ];
+    
+    // Verifica se está no horário de funcionamento
+    function checkBusinessHours() {
+      const now = new Date();
+      const hours = now.getHours();
+      const statusElement = document.getElementById('status-text');
+      
+      // Aberto de domingo a domingo das 19h às 00h
+      if (hours >= 19 || hours < 0) { // 19h (7PM) até 00h (meia-noite)
+        statusElement.textContent = 'Aberto';
+        statusElement.className = 'status open';
+        return true;
+      } else {
+        statusElement.textContent = 'Fechado';
+        statusElement.className = 'status closed';
+        return false;
+      }
+    }
     
     // Atualiza o carrinho no localStorage
     function updateLocalStorage() {
@@ -1210,26 +1550,52 @@
     }
     
     // Adiciona item ao carrinho
-    function addItem(name, price, image) {
-      const existingItem = cart.find(item => item.name === name);
+    function addItem(name, price, image, addonsList = []) {
+      let itemName = name;
+      let itemPrice = price;
+      let addonsDescription = '';
+      
+      if (addonsList && addonsList.length > 0) {
+        addonsDescription = ' (Adicionais: ';
+        addonsList.forEach((addon, index) => {
+          itemPrice += addon.price;
+          addonsDescription += addon.name;
+          if (index < addonsList.length - 1) {
+            addonsDescription += ', ';
+          }
+        });
+        addonsDescription += ')';
+        itemName += addonsDescription;
+      }
+      
+      const existingItem = cart.find(item => item.name === itemName);
       
       if (existingItem) {
         existingItem.quantity += 1;
       } else {
-        cart.push({ name, price, image, quantity: 1 });
+        cart.push({ 
+          name: itemName, 
+          price: itemPrice, 
+          basePrice: price,
+          image: image, 
+          quantity: 1,
+          addons: addonsList
+        });
       }
       
       updateCart();
       updateLocalStorage();
       
       // Feedback visual
-      const button = event.target;
-      button.textContent = 'Adicionado!';
-      button.style.backgroundColor = '#27ae60';
-      setTimeout(() => {
-        button.textContent = 'Adicionar';
-        button.style.backgroundColor = '';
-      }, 1000);
+      const button = event ? event.target : null;
+      if (button) {
+        button.textContent = 'Adicionado!';
+        button.style.backgroundColor = '#27ae60';
+        setTimeout(() => {
+          button.textContent = 'Adicionar';
+          button.style.backgroundColor = '';
+        }, 1000);
+      }
     }
     
     // Remove item do carrinho
@@ -1288,6 +1654,12 @@
         return;
       }
       
+      // Verifica se está no horário de funcionamento
+      if (!checkBusinessHours()) {
+        alert('Desculpe, estamos fechados no momento. Nosso horário de funcionamento é de domingo a domingo das 19h às 00h.');
+        return;
+      }
+      
       const modal = document.getElementById('checkout-modal');
       modal.style.display = 'block';
       
@@ -1327,6 +1699,38 @@
       modal.style.display = 'none';
     }
     
+    // Seleciona opção de entrega/retirada
+    function selectDeliveryOption(element, option) {
+      // Remove a seleção de todos os botões
+      document.querySelectorAll('.delivery-option').forEach(btn => {
+        btn.classList.remove('selected');
+      });
+      
+      // Adiciona seleção ao botão clicado
+      element.classList.add('selected');
+      
+      // Marca o radio button correspondente
+      document.getElementById(`option-${option}`).checked = true;
+      
+      // Mostra/oculta campos de endereço conforme necessário
+      const addressFields = document.getElementById('address-fields');
+      const deliveryGroup = document.getElementById('delivery-address-group');
+      const deliveryFee = document.getElementById('delivery-fee');
+      
+      if (option === 'entrega') {
+        addressFields.style.display = 'block';
+        deliveryGroup.style.display = 'block';
+        deliveryFee.style.display = 'block';
+      } else if (option === 'retirada' || option === 'local') {
+        addressFields.style.display = 'none';
+        deliveryGroup.style.display = 'none';
+        deliveryFee.style.display = 'none';
+        deliveryFee.textContent = 'Taxa de entrega: R$ 0,00';
+      }
+      
+      updateOrderTotal();
+    }
+    
     // Atualiza a taxa de entrega
     function updateDeliveryFee() {
       const neighborhood = document.getElementById('customer-neighborhood').value;
@@ -1344,6 +1748,7 @@
     // Atualiza o total do pedido (subtotal + taxa)
     function updateOrderTotal() {
       const neighborhood = document.getElementById('customer-neighborhood').value;
+      const deliveryOption = document.querySelector('input[name="delivery-option"]:checked').value;
       const orderTotalElement = document.getElementById('order-total');
       
       let subtotal = 0;
@@ -1351,16 +1756,74 @@
         subtotal += item.price * item.quantity;
       });
       
-      const deliveryFee = neighborhood && deliveryFees[neighborhood] ? deliveryFees[neighborhood] : 0;
+      let deliveryFee = 0;
+      if (deliveryOption === 'entrega' && neighborhood && deliveryFees[neighborhood]) {
+        deliveryFee = deliveryFees[neighborhood];
+      }
+      
       const total = subtotal + deliveryFee;
       
       orderTotalElement.textContent = `Total do Pedido: R$ ${total.toFixed(2)}`;
+    }
+    
+    // Abre o modal de adicionais
+    function openAddonsModal(name, price, image) {
+      currentItem = { name, price, image };
+      currentAddons = [];
+      
+      const modal = document.getElementById('addons-modal');
+      const titleElement = document.getElementById('addons-item-title');
+      const addonsListElement = document.getElementById('addons-list');
+      
+      titleElement.textContent = `${name} - Adicionais`;
+      
+      let addonsHTML = '';
+      addons.forEach((addon, index) => {
+        addonsHTML += `
+          <div class="addon-item">
+            <input type="checkbox" id="addon-${index}" class="addon-checkbox" 
+                   onclick="toggleAddon(${index}, ${addon.price})">
+            <label for="addon-${index}" class="addon-name">${addon.name}</label>
+            <div class="addon-price">+ R$ ${addon.price.toFixed(2)}</div>
+          </div>
+        `;
+      });
+      
+      addonsListElement.innerHTML = addonsHTML;
+      modal.style.display = 'block';
+    }
+    
+    // Fecha o modal de adicionais
+    function closeAddonsModal() {
+      const modal = document.getElementById('addons-modal');
+      modal.style.display = 'none';
+    }
+    
+    // Alterna adicional selecionado
+    function toggleAddon(index, price) {
+      const checkbox = document.getElementById(`addon-${index}`);
+      const addon = addons[index];
+      
+      if (checkbox.checked) {
+        currentAddons.push({ name: addon.name, price: addon.price });
+      } else {
+        currentAddons = currentAddons.filter(a => a.name !== addon.name);
+      }
+    }
+    
+    // Adiciona item com adicionais ao carrinho
+    function addItemWithAddons() {
+      if (currentItem) {
+        addItem(currentItem.name, currentItem.price, currentItem.image, currentAddons);
+        closeAddonsModal();
+      }
     }
     
     // Envia o pedido
     function submitOrder() {
       const name = document.getElementById('customer-name').value;
       const phone = document.getElementById('customer-phone').value;
+      const deliveryOption = document.querySelector('input[name="delivery-option"]:checked').value;
       const neighborhood = document.getElementById('customer-neighborhood').value;
       const street = document.getElementById('customer-street').value;
       const number = document.getElementById('customer-number').value;
@@ -1368,10 +1831,27 @@
       const zipcode = document.getElementById('customer-zipcode').value;
       const payment = document.querySelector('input[name="payment"]:checked').value;
       
-      if (!name || !phone || !neighborhood || !street || !number || !zipcode) {
-        alert('Por favor, preencha todos os campos obrigatórios.');
+      // Validação básica
+      if (!name || !phone) {
+        alert('Por favor, preencha seu nome e telefone.');
         return;
       }
+      
+      if (deliveryOption === 'entrega' && (!neighborhood || !street || !number || !zipcode)) {
+        alert('Por favor, preencha todos os campos de endereço para entrega.');
+        return;
+      }
+      
+      // Incrementa número do pedido
+      orderNumber++;
+      
+      // Obtém data e hora atual
+      const now = new Date();
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      const day = now.getDate().toString().padStart(2, '0');
+      const month = (now.getMonth() + 1).toString().padStart(2, '0');
+      const year = now.getFullYear();
       
       // Calcula totais
       let subtotal = 0;
@@ -1383,21 +1863,36 @@
         orderItems += `${item.quantity}x ${item.name} - R$ ${itemTotal.toFixed(2)}\n`;
       });
       
-      const deliveryFee = deliveryFees[neighborhood] || 0;
+      const deliveryFee = deliveryOption === 'entrega' && deliveryFees[neighborhood] ? deliveryFees[neighborhood] : 0;
       const total = subtotal + deliveryFee;
       
       // Monta mensagem para WhatsApp
       let message = `*NOVO PEDIDO - FOODTRUCK DO PITIU*\n\n`;
+      message += `*Pedido Nº:* ${orderNumber}\n`;
+      message += `*Data/Hora:* ${hours}:${minutes} em ${day}/${month}/${year}\n\n`;
       message += `*Cliente:* ${name}\n`;
       message += `*Telefone:* ${phone}\n\n`;
-      message += `*Endereço:*\n`;
-      message += `${street}, ${number}`;
-      if (complement) message += ` - ${complement}`;
-      message += `\n${neighborhood}\n`;
-      message += `CEP: ${zipcode}\n\n`;
+      
+      if (deliveryOption === 'entrega') {
+        message += `*Tipo:* Entrega\n`;
+        message += `*Endereço:*\n`;
+        message += `${street}, ${number}`;
+        if (complement) message += ` - ${complement}`;
+        message += `\n${neighborhood}\n`;
+        message += `CEP: ${zipcode}\n\n`;
+      } else if (deliveryOption === 'retirada') {
+        message += `*Tipo:* Retirada\n\n`;
+      } else if (deliveryOption === 'local') {
+        message += `*Tipo:* Comer no Local\n\n`;
+      }
+      
       message += `*Pedido:*\n${orderItems}\n`;
       message += `*Subtotal:* R$ ${subtotal.toFixed(2)}\n`;
-      message += `*Taxa de entrega:* R$ ${deliveryFee.toFixed(2)}\n`;
+      
+      if (deliveryOption === 'entrega') {
+        message += `*Taxa de entrega:* R$ ${deliveryFee.toFixed(2)}\n`;
+      }
+      
       message += `*Total:* R$ ${total.toFixed(2)}\n\n`;
       message += `*Forma de pagamento:* ${payment}`;
       
@@ -1410,43 +1905,6 @@
       // Fecha o modal e limpa o carrinho
       closeModal();
       clearCart();
-    }
-    
-    // Finaliza o pedido via WhatsApp (direto, sem formulário)
-    function checkoutWhatsApp() {
-      if (cart.length === 0) {
-        alert('Seu carrinho está vazio!');
-        return;
-      }
-      
-      let message = 'Olá, gostaria de fazer um pedido:\n\n';
-      
-      let subtotal = 0;
-      cart.forEach(item => {
-        const itemTotal = item.price * item.quantity;
-        subtotal += itemTotal;
-        message += `${item.quantity}x ${item.name} - R$ ${itemTotal.toFixed(2)}\n`;
-      });
-      
-      message += `\n*Subtotal:* R$ ${subtotal.toFixed(2)}\n\n`;
-      message += '*Informações de entrega:*\n';
-      message += '1. Nome / Celular:\n';
-      message += '2. Bairro:\n';
-      message += '3. Endereço completo (Rua, número, complemento, CEP):\n\n';
-      message += '*Taxas de entrega:*\n';
-      message += 'Cascadura: R$12,00\n';
-      message += 'Madureira: R$10,00\n';
-      message += 'Vila Valqueire: R$5,00\n';
-      message += 'Marechal Hermes: R$8,00\n';
-      message += 'Bento Ribeiro: R$10,00\n';
-      message += 'Campinho: R$10,00\n';
-      message += 'Oswaldo Cruz: R$8,00\n';
-      message += 'Praça Seca: R$15,00\n';
-      message += 'Tanque: R$15,00\n\n';
-      message += '*Forma de pagamento:* ( ) PIX ( ) Dinheiro ( ) Cartão';
-      
-      const encodedMessage = encodeURIComponent(message);
-      window.open(`https://wa.me/5521992254487?text=${encodedMessage}`, '_blank');
     }
     
     // Rolagem suave para as seções
@@ -1493,9 +1951,15 @@
     
     // Fecha o modal ao clicar fora dele
     window.onclick = function(event) {
-      const modal = document.getElementById('checkout-modal');
-      if (event.target === modal) {
+      const checkoutModal = document.getElementById('checkout-modal');
+      const addonsModal = document.getElementById('addons-modal');
+      
+      if (event.target === checkoutModal) {
         closeModal();
+      }
+      
+      if (event.target === addonsModal) {
+        closeAddonsModal();
       }
     }
     
@@ -1503,6 +1967,10 @@
     window.addEventListener('DOMContentLoaded', () => {
       loadCart();
       setupIntersectionObserver();
+      checkBusinessHours();
+      
+      // Configura opção de entrega como padrão
+      selectDeliveryOption(document.querySelector('.delivery-option:nth-child(3)'), 'entrega');
     });
   </script>
 </body>
