@@ -503,7 +503,7 @@
     <p>📍 Praça Saiqui, Vila Valqueire</p>
     <p>🛵 Cardápio impresso e Instagram e Whatsapp: é só clicar ⤵️</p>
     <div class="social-links">
-      <a href="https://www.instagram.com/foodtruckdopitiu/" target="_blank" title="Menuimpresso"><i class="fas fa-book-open"></i></a>
+      <a href="[https://www.instagram.com/foodtruckdopitiu/](https://www.canva.com/design/DAFiXrcSAYE/SyFYhg2E6JroZstX3cA_hA/view?website#4)" target="_blank" title="Menuimpresso"><i class="fas fa-book-open"></i></a>
       <a href="https://www.instagram.com/foodtruckdopitiu/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
       <a href="https://wa.me/5521992254487" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
     </div>
