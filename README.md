@@ -499,11 +499,11 @@
   <div class="header">
     <img src="logotipo1pitiu.png" alt="FoodTruck do Pitiu" class="logo">
     <h1>𝙁𝙊𝙊𝘿𝙏𝙍𝙐𝘾𝙆 𝘿𝙊 𝙋𝙄𝙏𝙄𝙐</h1>
-    <p>☕ Pitiu Café Especial - 08:00h às 16:00h 🍞</p>
     <p>🍻 Pitiu Artesanais - 19:00h às 00:00h 🍔</p>
     <p>📍 Praça Saiqui, Vila Valqueire</p>
-    <p>🛵 Cardápio Delivery: é só clicar ⤵️</p>
+    <p>🛵 Cardápio impresso e Instagram e Whatsapp: é só clicar ⤵️</p>
     <div class="social-links">
+      <a href="https://www.instagram.com/foodtruckdopitiu/" target="_blank" title="Menuimpresso"><i class="fas fa-book-open"></i></a>
       <a href="https://www.instagram.com/foodtruckdopitiu/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
       <a href="https://wa.me/5521992254487" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
     </div>
